@@ -10,3 +10,183 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum Role {
+  SUPERADMIN
+  ADMIN
+  USER
+}
+
+enum LikeType {
+  LIKE
+  DISLIKE
+}
+
+enum NotificationType {
+  NEW_VIDEO
+  NEW_SUBSCRIBER
+  VIDEO_LIKED
+  COMMENT_REPLY
+  MENTION
+}
+
+enum VideoStatus {
+  UPLOADING
+  PROCESSING
+  PUBLISHED
+  PRIVATE
+  UNLISTED
+  DELETED
+}
+
+enum Visibility {
+  PUBLIC
+  UNLISTED
+  PRIVATE
+}
+
+model User {
+  id                Int      @id @default(autoincrement())
+  email             String   @unique
+  username          String   @unique
+  firstName         String
+  lastName          String
+  avatar            String?
+  role              Role     @default(USER)
+  is_email_verified Boolean  @default(false)
+  is_phone_verified Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  videos         Video[]
+  comments       Comment[]
+  likes          Like[]
+  subscriptions  Subscription[] @relation("UserSubscriptions")
+  subscribers    Subscription[] @relation("UserSubscribers")
+  playlists      Playlist[]
+  watchHistories WatchHistory[]
+  notifications  Notification[]
+}
+
+model Video {
+  id            Int         @id @default(autoincrement())
+  title         String
+  description   String?
+  thumbnail     String?
+  videoUrl      String
+  duration      Int
+  status        VideoStatus @default(PROCESSING)
+  visibility    Visibility  @default(PUBLIC)
+  viewsCount    BigInt      @default(0)
+  likesCount    Int         @default(0)
+  dislikesCount Int         @default(0)
+  createdAt     DateTime    @default(now())
+
+  authorId Int
+  author   User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  comments       Comment[]
+  likes          Like[]
+  playlistVideos PlaylistVideo[]
+  watchHistories WatchHistory[]
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  content    String
+  likesCount Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  authorId Int
+  author   User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  videoId Int
+  video   Video @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  likes Like[]
+}
+
+model Subscription {
+  id           Int  @id @default(autoincrement())
+  subscriberId Int
+  subscriber   User @relation("UserSubscriptions", fields: [subscriberId], references: [id], onDelete: Cascade)
+
+  channelId Int
+  channel   User @relation("UserSubscribers", fields: [channelId], references: [id], onDelete: Cascade)
+
+  notificationsEnabled Boolean  @default(true)
+  createdAt            DateTime @default(now())
+
+  @@unique([subscriberId, channelId])
+}
+
+model Playlist {
+  id          Int        @id @default(autoincrement())
+  title       String?
+  description String?
+  visibility  Visibility @default(PUBLIC)
+  createdAt   DateTime   @default(now())
+
+  authorId Int
+  author   User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  videos PlaylistVideo[]
+}
+
+model PlaylistVideo {
+  id       Int      @id @default(autoincrement())
+  position Int
+  addedAt  DateTime @default(now())
+
+  playlistId Int
+  playlist   Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+
+  videoId Int
+  video   Video @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  @@unique([playlistId, videoId])
+}
+
+model Like {
+  id        Int      @id @default(autoincrement())
+  type      LikeType
+  createdAt DateTime @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  videoId Int?
+  video   Video? @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  commentId Int?
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, videoId, type])
+  @@unique([userId, commentId, type])
+}
+
+model WatchHistory {
+  id        Int      @id @default(autoincrement())
+  watchedAt DateTime @default(now())
+  watchTime Int
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  videoId Int
+  video   Video @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, videoId])
+}
+
+model Notification {
+  id        Int              @id @default(autoincrement())
+  type      NotificationType
+  title     String
+  message   String
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
