@@ -17,8 +17,4 @@ export class CreateUserDto {
     @ApiProperty()
     @IsString()
     lastName: string
-
-    @ApiProperty()
-    @IsString()
-    avatar?:string
 }

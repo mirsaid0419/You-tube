@@ -45,7 +45,7 @@ export class TokenGuard implements CanActivate {
         throw new UnauthorizedException('Foydalanuvchi o\'chirilgan');
       }
 
-      req.user = user;
+      req['user'] = user;
       return true;
     } catch (error) {
       if (error instanceof UnauthorizedException) {
