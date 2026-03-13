@@ -6,6 +6,7 @@ import { CommentsModule } from './modules/comments/comments.module';
 import { UsersModule } from './modules/users/users.module';
 import { VideosModule } from './modules/videos/videos.module';
 import { PrismaModule } from './core/database/prsima.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { PrismaModule } from './core/database/prsima.module';
       inject: [ConfigService],
     }),
     CommentsModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
