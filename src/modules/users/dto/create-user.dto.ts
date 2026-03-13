@@ -20,5 +20,5 @@ export class CreateUserDto {
 
     @ApiProperty()
     @IsNumber()
-    otp?:number
+    otp:number
 }

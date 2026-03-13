@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { PrismaModule } from './core/database/prsima.module';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { CommentsModule } from './modules/comments/comments.module';
 import { UsersModule } from './modules/users/users.module';
 import { VideosModule } from './modules/videos/videos.module';
+import { PrismaModule } from './core/database/prsima.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { VideosModule } from './modules/videos/videos.module';
       inject: [ConfigService],
     }),
     CommentsModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

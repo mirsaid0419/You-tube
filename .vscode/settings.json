@@ -1,0 +1,17 @@
+{
+  "editor.suggest.enabled": true,
+  "editor.suggest.filterGraceful": true,
+  "editor.acceptSuggestionOnCommitCharacter": false,
+  "editor.acceptSuggestionOnEnter": "off",
+  "[typescript]": {
+    "editor.suggest.enabled": true,
+    "editor.acceptSuggestionOnEnter": "off"
+  },
+  "[javascript]": {
+    "editor.suggest.enabled": true,
+    "editor.acceptSuggestionOnEnter": "off"
+  },
+  "editor.codeActionsOnSave": {},
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": false
+}
