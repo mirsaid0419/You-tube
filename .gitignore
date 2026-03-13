@@ -2,7 +2,10 @@
 /dist
 /node_modules
 /build
-
+/src/common/interceptors
+/src/common/utils
+/src/common/email
+/src/uploads
 # Logs
 logs
 *.log
