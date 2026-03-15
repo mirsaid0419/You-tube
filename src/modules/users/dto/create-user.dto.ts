@@ -1,24 +1,50 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNumber, IsString } from "class-validator";
+// import { ApiProperty } from "@nestjs/swagger";
+// import { IsEmail, IsNumber, IsString } from "class-validator";
+
+// export class CreateUserDto {
+//     @ApiProperty()
+//     @IsEmail()
+//     email: string
+
+//     @ApiProperty()
+//     @IsString()
+//     username: string
+
+//     @ApiProperty()
+//     @IsString()
+//     firstName: string
+
+//     @ApiProperty()
+//     @IsString()
+//     lastName: string
+
+//     @ApiProperty()
+//     @IsNumber()
+//     otp:number
+// }
+
+import { IsEmail, IsNotEmpty, IsString, IsNumber, MinLength, MaxLength } from 'class-validator';
+import { Transform } from 'class-transformer';
 
 export class CreateUserDto {
-    @ApiProperty()
-    @IsEmail()
-    email: string
+  @IsEmail({}, { message: "Noto'g'ri email formati" })
+  @IsNotEmpty()
+  email: string;
 
-    @ApiProperty()
-    @IsString()
-    username: string
+  @IsString()
+  @IsNotEmpty()
+  username: string;
 
-    @ApiProperty()
-    @IsString()
-    firstName: string
+  @IsString()
+  @IsNotEmpty()
+  firstName: string;
 
-    @ApiProperty()
-    @IsString()
-    lastName: string
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
 
-    @ApiProperty()
-    @IsNumber()
-    otp:number
+  @IsNumber()
+  @IsNotEmpty()
+  @Transform(({ value }) => Number(value)) 
+  otp: number;
 }

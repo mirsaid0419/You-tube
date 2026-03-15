@@ -4,7 +4,7 @@
 /build
 /src/common/interceptors
 /src/common/utils
-/src/common/email
+# /src/common/email
 /src/uploads
 # Logs
 logs
