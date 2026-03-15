@@ -92,6 +92,7 @@ model Comment {
   content    String
   likesCount Int      @default(0)
   createdAt  DateTime @default(now())
+  isDeleted Boolean  @default(false)
 
   authorId Int
   author   User @relation(fields: [authorId], references: [id], onDelete: Cascade)

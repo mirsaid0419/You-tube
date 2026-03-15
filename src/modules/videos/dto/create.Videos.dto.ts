@@ -1,33 +1,29 @@
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { VideoStatus, Visibility } from "@prisma/client";
 import { IsEnum, IsInt, IsOptional, IsString } from "class-validator";
 
 export class CreateVideoDto {
-    
+    @ApiProperty()
     @IsString()
     title: string;
-
-    @IsOptional()
+    
+    @ApiPropertyOptional()
     @IsString()
     description?: string;
 
-    @IsOptional()
+    @ApiPropertyOptional()
     @IsString()
     thumbnail?: string;
-
+    
+    @ApiProperty()
     @IsString()
     videoUrl: string;
-
+    
+    @ApiProperty()
     @IsInt()
     duration: number;
-
-    @IsOptional()
-    @IsEnum(VideoStatus)
-    status?: VideoStatus;
-
-    @IsOptional()
+    
+    @ApiPropertyOptional({enum: Visibility})
     @IsEnum(Visibility)
     visibility?: Visibility;
-
-    @IsInt()
-    authorId: number;
 }

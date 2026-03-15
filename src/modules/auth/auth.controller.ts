@@ -28,11 +28,11 @@ export class AuthController {
         firstName: { type: "string" },
         lastName: { type: "string" },
         email: { type: "string" },
+        otp:{type:"number"},
         file: { type: "string", format: "binary" },
       },
     }
   })
-
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
       destination: 'src/uploads/Avatar',
