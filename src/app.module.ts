@@ -7,6 +7,7 @@ import { UsersModule } from './modules/users/users.module';
 import { VideosModule } from './modules/videos/videos.module';
 import { PrismaModule } from './core/database/prsima.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { AuthModule } from './modules/auth/auth.module';
     }),
     CommentsModule,
     AuthModule,
+    CloudinaryModule
   ],
 })
 export class AppModule {}
