@@ -31,9 +31,9 @@ export class UsersController {
     return this.usersService.getOneuser(req["user"])
   }
   @UseGuards(TokenGuard, RoleGuard)
-  @ApiOperation({ summary: `${Role.USER}` })
-  @Roles(Role.USER)
-  @Put(":id")
+  @ApiOperation({ summary: `${Role.USER} ${Role.SUPERADMIN},${Role.ADMIN}` })
+  @Roles(Role.USER,Role.ADMIN,Role.SUPERADMIN)
+  @Patch(":id")
   @ApiConsumes("multipart/form-data")
   @ApiBody({
     schema: {

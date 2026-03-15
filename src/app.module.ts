@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { RedisModule } from '@nestjs-modules/ioredis';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { CommentsModule } from './modules/comments/comments.module';
 import { UsersModule } from './modules/users/users.module';
@@ -8,12 +7,11 @@ import { VideosModule } from './modules/videos/videos.module';
 import { PrismaModule } from './core/database/prsima.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
+import { EmailModule } from './common/email/email.module';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
 
 @Module({
   imports: [
-    UsersModule,
-    VideosModule,
-    PrismaModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -37,14 +35,19 @@ import { CloudinaryModule } from './modules/cloudinary/cloudinary.module';
     }),
     RedisModule.forRootAsync({
       useFactory: (config: ConfigService) => ({
-        type: 'single',
-        url: `redis://${config.get('REDIS_HOST') || 'redis'}:6379`,
+        config: {
+          url: `redis://${config.get('REDIS_HOST') || 'localhost'}:6379`,
+        },
       }),
       inject: [ConfigService],
     }),
-    CommentsModule,
+    PrismaModule,
     AuthModule,
-    CloudinaryModule
+    UsersModule,
+    EmailModule,
+    VideosModule,
+    CommentsModule,
+    CloudinaryModule,
   ],
 })
 export class AppModule {}
